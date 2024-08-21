@@ -1,7 +1,7 @@
 ﻿namespace Rendering.Components
 {
-    public readonly struct IsText
+    public struct IsText
     {
-
+        public uint version;
     }
 }
