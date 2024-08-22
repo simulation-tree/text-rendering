@@ -18,18 +18,25 @@ namespace Rendering
         /// </summary>
         public readonly ReadOnlySpan<char> Text => ((Entity)mesh).GetList<char>().AsSpan();
 
+        public readonly Font Font
+        {
+            get
+            {
+                Entity entity = mesh;
+                IsTextMeshRequest request = entity.GetComponent<IsTextMeshRequest>();
+                rint fontReference = request.fontReference;
+                eint fontEntity = entity.GetReference(fontReference);
+                return new Font(entity, fontEntity);
+            }
+        }
+
         eint IEntity.Value => (Entity)mesh;
         World IEntity.World => (Entity)mesh;
 
-        public TextMesh(World world, eint existingEntity)
-        {
-            mesh = new(world, existingEntity);
-        }
-
         public TextMesh(World world, ReadOnlySpan<char> text, Font font)
         {
-            mesh = new(world);
-            Entity entity = mesh;
+            Entity entity = new(world);
+            mesh = entity.As<Mesh>();
             rint fontReference = entity.AddReference(font);
             entity.AddComponent(new IsTextMeshRequest(fontReference));
 
