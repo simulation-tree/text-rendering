@@ -1,4 +1,5 @@
 ﻿using Simulation;
+using System.Numerics;
 
 namespace Rendering.Components
 {
@@ -6,11 +7,13 @@ namespace Rendering.Components
     {
         public uint version;
         public rint fontReference;
+        public Vector2 alignment;
 
-        public IsTextMeshRequest(rint fontReference)
+        public IsTextMeshRequest(rint fontReference, Vector2 alignment)
         {
             version = default;
             this.fontReference = fontReference;
+            this.alignment = alignment;
         }
     }
 }

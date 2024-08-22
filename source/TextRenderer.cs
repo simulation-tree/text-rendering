@@ -9,6 +9,18 @@ namespace Rendering
     {
         private readonly Renderer renderer;
 
+        public readonly bool IsEnabled
+        {
+            get => renderer.IsEnabled;
+            set => renderer.IsEnabled = value;
+        }
+
+        public readonly Entity Parent
+        {
+            get => renderer.Parent;
+            set => renderer.Parent = value;
+        }
+
         eint IEntity.Value => (Entity)renderer;
         World IEntity.World => (Entity)renderer;
 

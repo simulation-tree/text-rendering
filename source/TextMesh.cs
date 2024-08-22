@@ -4,6 +4,7 @@ using Meshes.Components;
 using Rendering.Components;
 using Simulation;
 using System;
+using System.Numerics;
 using Unmanaged;
 using Unmanaged.Collections;
 
@@ -30,15 +31,32 @@ namespace Rendering
             }
         }
 
+        public readonly Vector2 Alignment
+        {
+            get
+            {
+                Entity entity = mesh;
+                IsTextMeshRequest request = entity.GetComponent<IsTextMeshRequest>();
+                return request.alignment;
+            }
+            set
+            {
+                Entity entity = mesh;
+                ref IsTextMeshRequest request = ref entity.GetComponent<IsTextMeshRequest>();
+                request.alignment = value;
+                request.version++;
+            }
+        }
+
         eint IEntity.Value => (Entity)mesh;
         World IEntity.World => (Entity)mesh;
 
-        public TextMesh(World world, ReadOnlySpan<char> text, Font font)
+        public TextMesh(World world, ReadOnlySpan<char> text, Font font, Vector2 alignment = default)
         {
             Entity entity = new(world);
             mesh = entity.As<Mesh>();
             rint fontReference = entity.AddReference(font);
-            entity.AddComponent(new IsTextMeshRequest(fontReference));
+            entity.AddComponent(new IsTextMeshRequest(fontReference, alignment));
 
             UnmanagedList<char> list = entity.CreateList<char>();
             list.AddRange(text);
