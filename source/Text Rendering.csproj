@@ -12,10 +12,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\bin-packing\source\Bin Packing.csproj" />
-    <ProjectReference Include="..\..\fonts\Fonts.csproj" />
+    <ProjectReference Include="..\..\fonts\source\Fonts.csproj" />
     <ProjectReference Include="..\..\rendering\source\Rendering.csproj" />
     <ProjectReference Include="..\..\simulation\source\Simulation.csproj" />
-    <ProjectReference Include="..\..\textures\Textures.csproj" />
+    <ProjectReference Include="..\..\textures\source\Textures.csproj" />
   </ItemGroup>
 
 </Project>
