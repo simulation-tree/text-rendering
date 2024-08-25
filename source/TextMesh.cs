@@ -6,7 +6,6 @@ using Simulation;
 using System;
 using System.Numerics;
 using Unmanaged;
-using Unmanaged.Collections;
 
 namespace Rendering
 {
@@ -17,7 +16,7 @@ namespace Rendering
         /// <summary>
         /// Read only access to the text content.
         /// </summary>
-        public readonly ReadOnlySpan<char> Text => ((Entity)mesh).GetList<char>().AsSpan();
+        public readonly ReadOnlySpan<char> Text => ((Entity)mesh).GetArray<char>();
 
         public readonly Font Font
         {
@@ -57,9 +56,7 @@ namespace Rendering
             mesh = entity.As<Mesh>();
             rint fontReference = entity.AddReference(font);
             entity.AddComponent(new IsTextMeshRequest(fontReference, alignment));
-
-            UnmanagedList<char> list = entity.CreateList<char>();
-            list.AddRange(text);
+            entity.CreateArray(text);
         }
 
         Query IEntity.GetQuery(World world)
@@ -77,11 +74,10 @@ namespace Rendering
         /// </summary>
         public readonly void SetText(ReadOnlySpan<char> text)
         {
-            UnmanagedList<char> list = ((Entity)mesh).GetList<char>();
-            list.Clear();
-            list.AddRange(text);
-
-            ref IsTextMeshRequest request = ref ((Entity)mesh).TryGetComponentRef<IsTextMeshRequest>(out bool contains);
+            Entity entity = mesh;
+            Span<char> array = entity.ResizeArray<char>((uint)text.Length);
+            text.CopyTo(array);
+            ref IsTextMeshRequest request = ref entity.TryGetComponentRef<IsTextMeshRequest>(out bool contains);
             if (contains)
             {
                 request.version++;
