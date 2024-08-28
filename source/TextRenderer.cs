@@ -1,11 +1,10 @@
 ﻿using Rendering.Components;
 using Simulation;
-using System;
 using Unmanaged;
 
 namespace Rendering
 {
-    public readonly struct TextRenderer : IEntity, IDisposable
+    public readonly struct TextRenderer : IEntity
     {
         private readonly Renderer renderer;
 
@@ -43,11 +42,6 @@ namespace Rendering
         Query IEntity.GetQuery(World world)
         {
             return new(world, [RuntimeType.Get<IsTextRenderer>(), RuntimeType.Get<IsRenderer>()]);
-        }
-
-        public readonly void Dispose()
-        {
-            renderer.Dispose();
         }
 
         public static implicit operator Entity(TextRenderer renderer)

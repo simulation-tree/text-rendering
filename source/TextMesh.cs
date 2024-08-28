@@ -9,7 +9,7 @@ using Unmanaged;
 
 namespace Rendering
 {
-    public readonly struct TextMesh : IEntity, IDisposable
+    public readonly struct TextMesh : IEntity
     {
         private readonly Mesh mesh;
 
@@ -62,11 +62,6 @@ namespace Rendering
         Query IEntity.GetQuery(World world)
         {
             return new(world, [RuntimeType.Get<IsTextMesh>(), RuntimeType.Get<IsMesh>()]);
-        }
-
-        public readonly void Dispose()
-        {
-            mesh.Dispose();
         }
 
         /// <summary>
