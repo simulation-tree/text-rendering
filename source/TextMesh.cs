@@ -23,7 +23,7 @@ namespace Rendering
             get
             {
                 Entity entity = mesh;
-                IsTextMeshRequest request = entity.GetComponent<IsTextMeshRequest>();
+                IsTextMeshRequest request = entity.GetComponentRef<IsTextMeshRequest>();
                 rint fontReference = request.fontReference;
                 uint fontEntity = entity.GetReference(fontReference);
                 return new Font(entity, fontEntity);
@@ -35,13 +35,13 @@ namespace Rendering
             get
             {
                 Entity entity = mesh;
-                IsTextMeshRequest request = entity.GetComponent<IsTextMeshRequest>();
+                IsTextMeshRequest request = entity.GetComponentRef<IsTextMeshRequest>();
                 return request.alignment;
             }
             set
             {
                 Entity entity = mesh;
-                ref IsTextMeshRequest request = ref entity.GetComponent<IsTextMeshRequest>();
+                ref IsTextMeshRequest request = ref entity.GetComponentRef<IsTextMeshRequest>();
                 request.alignment = value;
                 request.version++;
             }
