@@ -20,10 +20,10 @@ namespace Rendering
             set => renderer.Parent = value;
         }
 
-        eint IEntity.Value => (Entity)renderer;
+        uint IEntity.Value => (Entity)renderer;
         World IEntity.World => (Entity)renderer;
 
-        public TextRenderer(World world, eint existingEntity)
+        public TextRenderer(World world, uint existingEntity)
         {
             renderer = new(world, existingEntity);
         }

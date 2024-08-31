@@ -25,7 +25,7 @@ namespace Rendering
                 Entity entity = mesh;
                 IsTextMeshRequest request = entity.GetComponent<IsTextMeshRequest>();
                 rint fontReference = request.fontReference;
-                eint fontEntity = entity.GetReference(fontReference);
+                uint fontEntity = entity.GetReference(fontReference);
                 return new Font(entity, fontEntity);
             }
         }
@@ -47,7 +47,7 @@ namespace Rendering
             }
         }
 
-        eint IEntity.Value => (Entity)mesh;
+        uint IEntity.Value => (Entity)mesh;
         World IEntity.World => (Entity)mesh;
 
         public TextMesh(World world, ReadOnlySpan<char> text, Font font, Vector2 alignment = default)
