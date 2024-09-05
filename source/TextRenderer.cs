@@ -6,7 +6,7 @@ namespace Rendering
 {
     public readonly struct TextRenderer : IEntity
     {
-        private readonly Renderer renderer;
+        public readonly Renderer renderer;
 
         public readonly bool IsEnabled
         {
@@ -20,8 +20,9 @@ namespace Rendering
             set => renderer.Parent = value;
         }
 
-        uint IEntity.Value => (Entity)renderer;
-        World IEntity.World => (Entity)renderer;
+        readonly uint IEntity.Value => renderer.entity.value;
+        readonly World IEntity.World => renderer.entity.world;
+        readonly Definition IEntity.Definition => new([RuntimeType.Get<IsTextRenderer>(), RuntimeType.Get<IsRenderer>()], []);
 
         public TextRenderer(World world, uint existingEntity)
         {
@@ -30,28 +31,12 @@ namespace Rendering
 
         public TextRenderer(World world, TextMesh mesh, Material material, Camera camera)
         {
-            Entity entity = new(world);
-            renderer = entity.As<Renderer>();
-            rint meshReference = entity.AddReference(mesh);
-            rint materialReference = entity.AddReference(material);
-            rint cameraReference = entity.AddReference(camera);
-            rint fontReference = entity.AddReference(mesh.Font);
-            entity.AddComponent(new IsTextRenderer(meshReference, materialReference, cameraReference, fontReference));
-        }
-
-        Query IEntity.GetQuery(World world)
-        {
-            return new(world, [RuntimeType.Get<IsTextRenderer>(), RuntimeType.Get<IsRenderer>()]);
-        }
-
-        public static implicit operator Entity(TextRenderer renderer)
-        {
-            return renderer.renderer;
-        }
-
-        public static implicit operator Renderer(TextRenderer renderer)
-        {
-            return renderer.renderer;
+            renderer = new Entity(world).As<Renderer>();
+            rint meshReference = renderer.entity.AddReference(mesh);
+            rint materialReference = renderer.entity.AddReference(material);
+            rint cameraReference = renderer.entity.AddReference(camera);
+            rint fontReference = renderer.entity.AddReference(mesh.Font);
+            renderer.entity.AddComponent(new IsTextRenderer(meshReference, materialReference, cameraReference, fontReference));
         }
     }
 }

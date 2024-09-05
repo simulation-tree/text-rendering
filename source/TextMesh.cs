@@ -3,7 +3,6 @@ using Meshes;
 using Meshes.Components;
 using Rendering.Components;
 using Simulation;
-using System;
 using System.Numerics;
 using Unmanaged;
 
@@ -11,22 +10,21 @@ namespace Rendering
 {
     public readonly struct TextMesh : IEntity
     {
-        private readonly Mesh mesh;
+        public readonly Mesh mesh;
 
         /// <summary>
         /// Read only access to the text content.
         /// </summary>
-        public readonly ReadOnlySpan<char> Text => ((Entity)mesh).GetArray<char>();
+        public readonly USpan<char> Text => mesh.entity.GetArray<char>();
 
         public readonly Font Font
         {
             get
             {
-                Entity entity = mesh;
-                IsTextMeshRequest request = entity.GetComponentRef<IsTextMeshRequest>();
+                IsTextMeshRequest request = mesh.entity.GetComponentRef<IsTextMeshRequest>();
                 rint fontReference = request.fontReference;
-                uint fontEntity = entity.GetReference(fontReference);
-                return new Font(entity, fontEntity);
+                uint fontEntity = mesh.entity.GetReference(fontReference);
+                return new Font(mesh.entity.world, fontEntity);
             }
         }
 
@@ -34,23 +32,22 @@ namespace Rendering
         {
             get
             {
-                Entity entity = mesh;
-                IsTextMeshRequest request = entity.GetComponentRef<IsTextMeshRequest>();
+                IsTextMeshRequest request = mesh.entity.GetComponentRef<IsTextMeshRequest>();
                 return request.alignment;
             }
             set
             {
-                Entity entity = mesh;
-                ref IsTextMeshRequest request = ref entity.GetComponentRef<IsTextMeshRequest>();
+                ref IsTextMeshRequest request = ref mesh.entity.GetComponentRef<IsTextMeshRequest>();
                 request.alignment = value;
                 request.version++;
             }
         }
 
-        uint IEntity.Value => (Entity)mesh;
-        World IEntity.World => (Entity)mesh;
+        readonly uint IEntity.Value => mesh.entity.value;
+        readonly World IEntity.World => mesh.entity.world;
+        readonly Definition IEntity.Definition => new([RuntimeType.Get<IsTextMesh>(), RuntimeType.Get<IsMesh>()], []);
 
-        public TextMesh(World world, ReadOnlySpan<char> text, Font font, Vector2 alignment = default)
+        public TextMesh(World world, USpan<char> text, Font font, Vector2 alignment = default)
         {
             Entity entity = new(world);
             mesh = entity.As<Mesh>();
@@ -59,34 +56,50 @@ namespace Rendering
             entity.CreateArray(text);
         }
 
-        Query IEntity.GetQuery(World world)
+        public TextMesh(World world, FixedString text, Font font, Vector2 alignment = default)
         {
-            return new(world, [RuntimeType.Get<IsTextMesh>(), RuntimeType.Get<IsMesh>()]);
+            Entity entity = new(world);
+            mesh = entity.As<Mesh>();
+            rint fontReference = entity.AddReference(font);
+            entity.AddComponent(new IsTextMeshRequest(fontReference, alignment));
+            USpan<char> buffer = stackalloc char[(int)FixedString.MaxLength];
+            uint length = text.CopyTo(buffer);
+            entity.CreateArray(buffer.Slice(0, length));
+        }
+
+        public TextMesh(World world, string text, Font font, Vector2 alignment = default)
+        {
+            Entity entity = new(world);
+            mesh = entity.As<Mesh>();
+            rint fontReference = entity.AddReference(font);
+            entity.AddComponent(new IsTextMeshRequest(fontReference, alignment));
+            entity.CreateArray(text.AsSpan());
         }
 
         /// <summary>
         /// Assigns the text content to the entity.
         /// </summary>
-        public readonly void SetText(ReadOnlySpan<char> text)
+        public readonly void SetText(USpan<char> text)
         {
-            Entity entity = mesh;
-            Span<char> array = entity.ResizeArray<char>((uint)text.Length);
+            USpan<char> array = mesh.entity.ResizeArray<char>(text.length);
             text.CopyTo(array);
-            ref IsTextMeshRequest request = ref entity.TryGetComponentRef<IsTextMeshRequest>(out bool contains);
+            ref IsTextMeshRequest request = ref mesh.entity.TryGetComponentRef<IsTextMeshRequest>(out bool contains);
             if (contains)
             {
                 request.version++;
             }
         }
 
-        public static implicit operator Mesh(TextMesh mesh)
+        public readonly void SetText(FixedString text)
         {
-            return mesh.mesh;
+            USpan<char> buffer = stackalloc char[(int)FixedString.MaxLength];
+            uint length = text.CopyTo(buffer);
+            SetText(buffer.Slice(0, length));
         }
 
-        public static implicit operator Entity(TextMesh mesh)
+        public readonly void SetText(string text)
         {
-            return mesh.mesh;
+            SetText(text.AsSpan());
         }
     }
 }
