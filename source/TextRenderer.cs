@@ -6,37 +6,112 @@ namespace Rendering
 {
     public readonly struct TextRenderer : IEntity
     {
-        public readonly Renderer renderer;
+        public readonly Entity entity;
 
         public readonly bool IsEnabled
         {
-            get => renderer.IsEnabled;
-            set => renderer.IsEnabled = value;
+            get => entity.IsEnabled;
+            set => entity.IsEnabled = value;
         }
 
         public readonly Entity Parent
         {
-            get => renderer.Parent;
-            set => renderer.Parent = value;
+            get => entity.Parent;
+            set => entity.Parent = value;
         }
 
-        readonly uint IEntity.Value => renderer.entity.value;
-        readonly World IEntity.World => renderer.entity.world;
-        readonly Definition IEntity.Definition => new([RuntimeType.Get<IsTextRenderer>(), RuntimeType.Get<IsRenderer>()], []);
+        public readonly Material Material
+        {
+            get
+            {
+                IsTextRenderer component = entity.GetComponentRef<IsTextRenderer>();
+                uint materialEntity = entity.GetReference(component.materialReference);
+                return new(entity.world, materialEntity);
+            }
+            set
+            {
+                ref IsTextRenderer component = ref entity.GetComponentRef<IsTextRenderer>();
+                if (entity.ContainsReference(component.materialReference))
+                {
+                    entity.SetReference(component.materialReference, value);
+                }
+                else
+                {
+                    component.materialReference = entity.AddReference(value);
+                }
+            }
+        }
+
+        public readonly TextMesh TextMesh
+        {
+            get
+            {
+                IsTextRenderer component = entity.GetComponentRef<IsTextRenderer>();
+                uint meshEntity = entity.GetReference(component.meshReference);
+                return new Entity(entity.world, meshEntity).As<TextMesh>();
+            }
+            set
+            {
+                ref IsTextRenderer component = ref entity.GetComponentRef<IsTextRenderer>();
+                if (entity.ContainsReference(component.meshReference))
+                {
+                    entity.SetReference(component.meshReference, value);
+                }
+                else
+                {
+                    component.meshReference = entity.AddReference(value);
+                }
+
+                if (entity.ContainsReference(component.fontReference))
+                {
+                    entity.SetReference(component.fontReference, value.Font);
+                }
+                else
+                {
+                    component.fontReference = entity.AddReference(value.Font);
+                }
+            }
+        }
+
+        public readonly Camera Camera
+        {
+            get
+            {
+                IsTextRenderer component = entity.GetComponentRef<IsTextRenderer>();
+                uint cameraEntity = entity.GetReference(component.cameraReference);
+                return new(entity.world, cameraEntity);
+            }
+            set
+            {
+                ref IsTextRenderer component = ref entity.GetComponentRef<IsTextRenderer>();
+                if (entity.ContainsReference(component.cameraReference))
+                {
+                    entity.SetReference(component.cameraReference, value);
+                }
+                else
+                {
+                    component.cameraReference = entity.AddReference(value);
+                }
+            }
+        }
+
+        readonly uint IEntity.Value => entity.value;
+        readonly World IEntity.World => entity.world;
+        readonly Definition IEntity.Definition => new([RuntimeType.Get<IsTextRenderer>()], []);
 
         public TextRenderer(World world, uint existingEntity)
         {
-            renderer = new(world, existingEntity);
+            entity = new(world, existingEntity);
         }
 
         public TextRenderer(World world, TextMesh mesh, Material material, Camera camera)
         {
-            renderer = new Entity(world).As<Renderer>();
-            rint meshReference = renderer.entity.AddReference(mesh);
-            rint materialReference = renderer.entity.AddReference(material);
-            rint cameraReference = renderer.entity.AddReference(camera);
-            rint fontReference = renderer.entity.AddReference(mesh.Font);
-            renderer.entity.AddComponent(new IsTextRenderer(meshReference, materialReference, cameraReference, fontReference));
+            entity = new Entity(world);
+            rint meshReference = entity.AddReference(mesh);
+            rint materialReference = entity.AddReference(material);
+            rint cameraReference = entity.AddReference(camera);
+            rint fontReference = entity.AddReference(mesh.Font);
+            entity.AddComponent(new IsTextRenderer(meshReference, materialReference, cameraReference, fontReference));
         }
     }
 }

@@ -47,6 +47,11 @@ namespace Rendering
         readonly World IEntity.World => mesh.entity.world;
         readonly Definition IEntity.Definition => new([RuntimeType.Get<IsTextMesh>(), RuntimeType.Get<IsMesh>()], []);
 
+        public TextMesh(World world, uint existingEntity)
+        {
+            mesh = new(world, existingEntity);
+        }
+
         public TextMesh(World world, USpan<char> text, Font font, Vector2 alignment = default)
         {
             Entity entity = new(world);
@@ -92,14 +97,9 @@ namespace Rendering
 
         public readonly void SetText(FixedString text)
         {
-            USpan<char> buffer = stackalloc char[(int)FixedString.MaxLength];
+            USpan<char> buffer = stackalloc char[(int)text.Length];
             uint length = text.CopyTo(buffer);
             SetText(buffer.Slice(0, length));
-        }
-
-        public readonly void SetText(string text)
-        {
-            SetText(text.AsSpan());
         }
     }
 }
