@@ -47,19 +47,19 @@ namespace Rendering
             get
             {
                 IsTextRenderer component = entity.GetComponentRef<IsTextRenderer>();
-                uint meshEntity = entity.GetReference(component.meshReference);
+                uint meshEntity = entity.GetReference(component.textMeshReference);
                 return new Entity(entity.world, meshEntity).As<TextMesh>();
             }
             set
             {
                 ref IsTextRenderer component = ref entity.GetComponentRef<IsTextRenderer>();
-                if (entity.ContainsReference(component.meshReference))
+                if (entity.ContainsReference(component.textMeshReference))
                 {
-                    entity.SetReference(component.meshReference, value);
+                    entity.SetReference(component.textMeshReference, value);
                 }
                 else
                 {
-                    component.meshReference = entity.AddReference(value);
+                    component.textMeshReference = entity.AddReference(value);
                 }
 
                 if (entity.ContainsReference(component.fontReference))
