@@ -78,7 +78,7 @@ namespace Rendering
             mesh = entity.As<Mesh>();
             rint fontReference = entity.AddReference(font);
             entity.AddComponent(new IsTextMeshRequest(fontReference, alignment));
-            entity.CreateArray(text.AsSpan());
+            entity.CreateArray(text.AsUSpan());
         }
 
         /// <summary>
