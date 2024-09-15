@@ -86,7 +86,7 @@ namespace Rendering
         /// </summary>
         public readonly void SetText(USpan<char> text)
         {
-            USpan<char> array = mesh.entity.ResizeArray<char>(text.length);
+            USpan<char> array = mesh.entity.ResizeArray<char>(text.Length);
             text.CopyTo(array);
             ref IsTextMeshRequest request = ref mesh.entity.TryGetComponentRef<IsTextMeshRequest>(out bool contains);
             if (contains)
