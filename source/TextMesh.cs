@@ -26,6 +26,19 @@ namespace Rendering
                 uint fontEntity = mesh.entity.GetReference(fontReference);
                 return new Font(mesh.entity.world, fontEntity);
             }
+            set
+            {
+                ref IsTextMeshRequest request = ref mesh.entity.GetComponentRef<IsTextMeshRequest>();
+                ref rint fontReference = ref request.fontReference;
+                if (fontReference == default)
+                {
+                    fontReference = mesh.entity.AddReference(value);
+                }
+                else
+                {
+                    mesh.SetReference(fontReference, value);
+                }
+            }
         }
 
         public readonly Vector2 Alignment
