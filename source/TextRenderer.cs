@@ -104,14 +104,14 @@ namespace Rendering
             entity = new(world, existingEntity);
         }
 
-        public TextRenderer(World world, TextMesh mesh, Material material, Camera camera)
+        public TextRenderer(World world, TextMesh textMesh, Material material, Camera camera)
         {
             entity = new Entity(world);
-            rint meshReference = entity.AddReference(mesh);
+            rint textMeshReference = entity.AddReference(textMesh);
             rint materialReference = entity.AddReference(material);
             rint cameraReference = entity.AddReference(camera);
-            rint fontReference = entity.AddReference(mesh.Font);
-            entity.AddComponent(new IsTextRenderer(meshReference, materialReference, cameraReference, fontReference));
+            rint fontReference = entity.AddReference(textMesh.Font);
+            entity.AddComponent(new IsTextRenderer(textMeshReference, materialReference, cameraReference, fontReference));
         }
     }
 }
