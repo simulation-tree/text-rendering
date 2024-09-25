@@ -3,7 +3,6 @@ using Meshes;
 using Meshes.Components;
 using Rendering.Components;
 using Simulation;
-using System.Numerics;
 using Unmanaged;
 
 namespace Rendering
@@ -41,21 +40,6 @@ namespace Rendering
             }
         }
 
-        public readonly Vector2 Alignment
-        {
-            get
-            {
-                IsTextMeshRequest request = mesh.entity.GetComponentRef<IsTextMeshRequest>();
-                return request.alignment;
-            }
-            set
-            {
-                ref IsTextMeshRequest request = ref mesh.entity.GetComponentRef<IsTextMeshRequest>();
-                request.alignment = value;
-                request.version++;
-            }
-        }
-
         readonly uint IEntity.Value => mesh.entity.value;
         readonly World IEntity.World => mesh.entity.world;
         readonly Definition IEntity.Definition => new([RuntimeType.Get<IsTextMesh>(), RuntimeType.Get<IsMesh>()], []);
@@ -65,32 +49,32 @@ namespace Rendering
             mesh = new(world, existingEntity);
         }
 
-        public TextMesh(World world, USpan<char> text, Font font, Vector2 alignment = default)
+        public TextMesh(World world, USpan<char> text, Font font)
         {
             Entity entity = new(world);
             mesh = entity.As<Mesh>();
             rint fontReference = entity.AddReference(font);
-            entity.AddComponent(new IsTextMeshRequest(fontReference, alignment));
+            entity.AddComponent(new IsTextMeshRequest(fontReference));
             entity.CreateArray(text);
         }
 
-        public TextMesh(World world, FixedString text, Font font, Vector2 alignment = default)
+        public TextMesh(World world, FixedString text, Font font)
         {
             Entity entity = new(world);
             mesh = entity.As<Mesh>();
             rint fontReference = entity.AddReference(font);
-            entity.AddComponent(new IsTextMeshRequest(fontReference, alignment));
+            entity.AddComponent(new IsTextMeshRequest(fontReference));
             USpan<char> buffer = stackalloc char[(int)FixedString.MaxLength];
             uint length = text.CopyTo(buffer);
             entity.CreateArray(buffer.Slice(0, length));
         }
 
-        public TextMesh(World world, string text, Font font, Vector2 alignment = default)
+        public TextMesh(World world, string text, Font font)
         {
             Entity entity = new(world);
             mesh = entity.As<Mesh>();
             rint fontReference = entity.AddReference(font);
-            entity.AddComponent(new IsTextMeshRequest(fontReference, alignment));
+            entity.AddComponent(new IsTextMeshRequest(fontReference));
             entity.CreateArray(text.AsUSpan());
         }
 
