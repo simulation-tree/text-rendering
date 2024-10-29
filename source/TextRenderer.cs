@@ -113,5 +113,10 @@ namespace Rendering
             rint fontReference = entity.AddReference(textMesh.Font);
             entity.AddComponent(new IsTextRenderer(textMeshReference, materialReference, cameraReference, fontReference));
         }
+
+        public readonly void Dispose()
+        {
+            entity.Dispose();
+        }
     }
 }

@@ -78,6 +78,11 @@ namespace Rendering
             entity.CreateArray(text.AsUSpan());
         }
 
+        public readonly void Dispose()
+        {
+            mesh.Dispose();
+        }
+
         /// <summary>
         /// Assigns the text content to the entity.
         /// </summary>
