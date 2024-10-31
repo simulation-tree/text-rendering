@@ -64,7 +64,7 @@ namespace Rendering
             mesh = entity.As<Mesh>();
             rint fontReference = entity.AddReference(font);
             entity.AddComponent(new IsTextMeshRequest(fontReference));
-            USpan<char> buffer = stackalloc char[(int)FixedString.MaxLength];
+            USpan<char> buffer = stackalloc char[(int)FixedString.Capacity];
             uint length = text.CopyTo(buffer);
             entity.CreateArray(buffer.Slice(0, length));
         }
