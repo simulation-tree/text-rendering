@@ -6,15 +6,15 @@ namespace Rendering.Components
     {
         public rint textMeshReference;
         public rint materialReference;
-        public rint cameraReference;
         public rint fontReference;
+        public uint mask;
 
-        public IsTextRenderer(rint meshReference, rint materialReference, rint cameraReference, rint fontReference)
+        public IsTextRenderer(rint meshReference, rint materialReference, rint fontReference, uint mask)
         {
             this.textMeshReference = meshReference;
             this.materialReference = materialReference;
-            this.cameraReference = cameraReference;
             this.fontReference = fontReference;
+            this.mask = mask;
         }
     }
 }

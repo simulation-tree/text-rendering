@@ -73,27 +73,7 @@ namespace Rendering
             }
         }
 
-        public readonly Camera Camera
-        {
-            get
-            {
-                IsTextRenderer component = entity.GetComponentRef<IsTextRenderer>();
-                uint cameraEntity = entity.GetReference(component.cameraReference);
-                return new(entity.world, cameraEntity);
-            }
-            set
-            {
-                ref IsTextRenderer component = ref entity.GetComponentRef<IsTextRenderer>();
-                if (entity.ContainsReference(component.cameraReference))
-                {
-                    entity.SetReference(component.cameraReference, value);
-                }
-                else
-                {
-                    component.cameraReference = entity.AddReference(value);
-                }
-            }
-        }
+        public readonly ref uint Mask => ref entity.GetComponentRef<IsTextRenderer>().mask;
 
         readonly uint IEntity.Value => entity.value;
         readonly World IEntity.World => entity.world;
@@ -104,14 +84,13 @@ namespace Rendering
             entity = new(world, existingEntity);
         }
 
-        public TextRenderer(World world, TextMesh textMesh, Material material, Camera camera)
+        public TextRenderer(World world, TextMesh textMesh, Material material, uint mask = 1)
         {
             entity = new Entity(world);
             rint textMeshReference = entity.AddReference(textMesh);
             rint materialReference = entity.AddReference(material);
-            rint cameraReference = entity.AddReference(camera);
             rint fontReference = entity.AddReference(textMesh.Font);
-            entity.AddComponent(new IsTextRenderer(textMeshReference, materialReference, cameraReference, fontReference));
+            entity.AddComponent(new IsTextRenderer(textMeshReference, materialReference, fontReference, mask));
         }
 
         public readonly void Dispose()
