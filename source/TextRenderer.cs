@@ -1,24 +1,11 @@
 ﻿using Rendering.Components;
-using Simulation;
-using Unmanaged;
+using Worlds;
 
 namespace Rendering
 {
     public readonly struct TextRenderer : IEntity
     {
-        public readonly Entity entity;
-
-        public readonly bool IsEnabled
-        {
-            get => entity.IsEnabled;
-            set => entity.IsEnabled = value;
-        }
-
-        public readonly Entity Parent
-        {
-            get => entity.Parent;
-            set => entity.Parent = value;
-        }
+        private readonly Entity entity;
 
         public readonly Material Material
         {
@@ -77,7 +64,7 @@ namespace Rendering
 
         readonly uint IEntity.Value => entity.value;
         readonly World IEntity.World => entity.world;
-        readonly Definition IEntity.Definition => new([RuntimeType.Get<IsTextRenderer>()], []);
+        readonly Definition IEntity.Definition => new([ComponentType.Get<IsTextRenderer>()], []);
 
         public TextRenderer(World world, uint existingEntity)
         {
@@ -96,6 +83,11 @@ namespace Rendering
         public readonly void Dispose()
         {
             entity.Dispose();
+        }
+
+        public static implicit operator Entity(TextRenderer renderer)
+        {
+            return renderer.entity;
         }
     }
 }

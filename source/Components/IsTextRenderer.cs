@@ -1,7 +1,8 @@
-﻿using Simulation;
+﻿using Worlds;
 
 namespace Rendering.Components
 {
+    [Component]
     public struct IsTextRenderer
     {
         public rint textMeshReference;
