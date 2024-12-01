@@ -12,7 +12,7 @@ namespace Rendering.Components
             this.value = value;
         }
 
-        public static implicit operator TextCharacter(char value) => new TextCharacter(value);
+        public static implicit operator TextCharacter(char value) => new(value);
         public static implicit operator char(TextCharacter value) => value.value;
     }
 }
