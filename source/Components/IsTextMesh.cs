@@ -6,5 +6,10 @@ namespace Rendering.Components
     public struct IsTextMesh
     {
         public uint version;
+
+        public IsTextMesh(uint version)
+        {
+            this.version = version;
+        }
     }
 }

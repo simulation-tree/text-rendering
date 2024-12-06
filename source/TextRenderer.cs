@@ -11,13 +11,13 @@ namespace Rendering
         {
             get
             {
-                IsTextRenderer component = entity.GetComponentRef<IsTextRenderer>();
+                IsTextRenderer component = entity.GetComponent<IsTextRenderer>();
                 uint materialEntity = entity.GetReference(component.materialReference);
                 return new(entity.world, materialEntity);
             }
             set
             {
-                ref IsTextRenderer component = ref entity.GetComponentRef<IsTextRenderer>();
+                ref IsTextRenderer component = ref entity.GetComponent<IsTextRenderer>();
                 if (entity.ContainsReference(component.materialReference))
                 {
                     entity.SetReference(component.materialReference, value);
@@ -33,13 +33,13 @@ namespace Rendering
         {
             get
             {
-                IsTextRenderer component = entity.GetComponentRef<IsTextRenderer>();
+                IsTextRenderer component = entity.GetComponent<IsTextRenderer>();
                 uint meshEntity = entity.GetReference(component.textMeshReference);
                 return new Entity(entity.world, meshEntity).As<TextMesh>();
             }
             set
             {
-                ref IsTextRenderer component = ref entity.GetComponentRef<IsTextRenderer>();
+                ref IsTextRenderer component = ref entity.GetComponent<IsTextRenderer>();
                 if (entity.ContainsReference(component.textMeshReference))
                 {
                     entity.SetReference(component.textMeshReference, value);
@@ -60,7 +60,7 @@ namespace Rendering
             }
         }
 
-        public readonly ref uint Mask => ref entity.GetComponentRef<IsTextRenderer>().mask;
+        public readonly ref uint Mask => ref entity.GetComponent<IsTextRenderer>().mask;
 
         readonly uint IEntity.Value => entity.value;
         readonly World IEntity.World => entity.world;

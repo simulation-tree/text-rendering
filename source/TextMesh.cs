@@ -20,14 +20,14 @@ namespace Rendering
         {
             get
             {
-                IsTextMeshRequest request = mesh.AsEntity().GetComponentRef<IsTextMeshRequest>();
+                IsTextMeshRequest request = mesh.AsEntity().GetComponent<IsTextMeshRequest>();
                 rint fontReference = request.fontReference;
                 uint fontEntity = mesh.AsEntity().GetReference(fontReference);
                 return new Font(mesh.AsEntity().world, fontEntity);
             }
             set
             {
-                ref IsTextMeshRequest request = ref mesh.AsEntity().GetComponentRef<IsTextMeshRequest>();
+                ref IsTextMeshRequest request = ref mesh.AsEntity().GetComponent<IsTextMeshRequest>();
                 ref rint fontReference = ref request.fontReference;
                 if (fontReference == default)
                 {
@@ -90,7 +90,7 @@ namespace Rendering
         {
             USpan<TextCharacter> array = mesh.AsEntity().ResizeArray<TextCharacter>(text.Length);
             text.As<TextCharacter>().CopyTo(array);
-            ref IsTextMeshRequest request = ref mesh.AsEntity().TryGetComponentRef<IsTextMeshRequest>(out bool contains);
+            ref IsTextMeshRequest request = ref mesh.AsEntity().TryGetComponent<IsTextMeshRequest>(out bool contains);
             if (contains)
             {
                 request.version++;
