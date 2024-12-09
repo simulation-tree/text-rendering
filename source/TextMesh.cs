@@ -97,6 +97,11 @@ namespace Rendering
             }
         }
 
+        public readonly void SetText(string text)
+        {
+            SetText(text.AsUSpan());
+        }
+
         public readonly void SetText(FixedString text)
         {
             USpan<char> buffer = stackalloc char[(int)text.Length];
