@@ -22,7 +22,7 @@ namespace Rendering
             {
                 IsTextMeshRequest request = mesh.AsEntity().GetComponent<IsTextMeshRequest>();
                 rint fontReference = request.fontReference;
-                uint fontEntity = mesh.AsEntity().GetReference(fontReference);
+                uint fontEntity = mesh.GetReference(fontReference);
                 return new Font(mesh.AsEntity().world, fontEntity);
             }
             set
@@ -31,7 +31,7 @@ namespace Rendering
                 ref rint fontReference = ref request.fontReference;
                 if (fontReference == default)
                 {
-                    fontReference = mesh.AsEntity().AddReference(value);
+                    fontReference = mesh.AddReference(value);
                 }
                 else
                 {
