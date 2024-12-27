@@ -64,7 +64,11 @@ namespace Rendering
 
         readonly uint IEntity.Value => entity.value;
         readonly World IEntity.World => entity.world;
-        readonly Definition IEntity.Definition => new([ComponentType.Get<IsTextRenderer>()], []);
+
+        readonly Definition IEntity.GetDefinition(Schema schema)
+        {
+            return new Definition().AddComponentType<IsTextRenderer>(schema);
+        }
 
         public TextRenderer(World world, uint existingEntity)
         {
