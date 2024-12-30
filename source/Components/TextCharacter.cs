@@ -2,7 +2,7 @@
 
 namespace Rendering.Components
 {
-    [Array]
+    [ArrayElement]
     public struct TextCharacter
     {
         public char value;
