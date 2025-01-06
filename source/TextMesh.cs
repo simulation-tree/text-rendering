@@ -43,9 +43,10 @@ namespace Rendering
         readonly uint IEntity.Value => mesh.GetEntityValue();
         readonly World IEntity.World => mesh.GetWorld();
 
-        readonly Definition IEntity.GetDefinition(Schema schema)
+        readonly void IEntity.Describe(ref Archetype archetype)
         {
-            return new Definition().AddComponentTypes<IsTextMesh, IsMesh>(schema);
+            archetype.AddComponentType<IsTextMesh>();
+            archetype.AddComponentType<IsMesh>();
         }
 
         public TextMesh(World world, uint existingEntity)
