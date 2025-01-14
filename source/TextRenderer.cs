@@ -60,7 +60,7 @@ namespace Rendering
             }
         }
 
-        public readonly ref uint Mask => ref entity.GetComponent<IsTextRenderer>().mask;
+        public readonly ref LayerMask RenderMask => ref entity.GetComponent<IsTextRenderer>().renderMask;
 
         readonly uint IEntity.Value => entity.value;
         readonly World IEntity.World => entity.world;
@@ -75,13 +75,17 @@ namespace Rendering
             entity = new(world, existingEntity);
         }
 
-        public TextRenderer(World world, TextMesh textMesh, Material material, uint mask = 1)
+        public TextRenderer(World world, TextMesh textMesh, Material material, LayerMask renderMask)
         {
-            entity = new Entity(world);
-            rint textMeshReference = entity.AddReference(textMesh);
-            rint materialReference = entity.AddReference(material);
-            rint fontReference = entity.AddReference(textMesh.Font);
-            entity.AddComponent(new IsTextRenderer(textMeshReference, materialReference, fontReference, mask));
+            entity = new Entity<IsTextRenderer>(world, new IsTextRenderer((rint)1, (rint)2, (rint)3, renderMask));
+            entity.AddReference(textMesh);
+            entity.AddReference(material);
+            entity.AddReference(textMesh.Font);
+        }
+
+        public TextRenderer(World world, TextMesh textMesh, Material material) :
+            this(world, textMesh, material, LayerMask.All)
+        {
         }
 
         public readonly void Dispose()

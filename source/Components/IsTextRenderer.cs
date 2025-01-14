@@ -8,14 +8,14 @@ namespace Rendering.Components
         public rint textMeshReference;
         public rint materialReference;
         public rint fontReference;
-        public uint mask;
+        public LayerMask renderMask;
 
-        public IsTextRenderer(rint meshReference, rint materialReference, rint fontReference, uint mask)
+        public IsTextRenderer(rint meshReference, rint materialReference, rint fontReference, LayerMask renderMask)
         {
             this.textMeshReference = meshReference;
             this.materialReference = materialReference;
             this.fontReference = fontReference;
-            this.mask = mask;
+            this.renderMask = renderMask;
         }
     }
 }
