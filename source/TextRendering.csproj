@@ -12,7 +12,7 @@
     <ProjectReference Include="..\..\bin-packer\source\BinPacker.csproj" />
     <ProjectReference Include="..\..\fonts\source\Fonts.csproj" />
     <ProjectReference Include="..\..\rendering\source\Rendering.csproj" />
-    <ProjectReference Include="..\..\simulation\source\Simulation.csproj" />
+    <ProjectReference Include="..\..\worlds\source\Worlds.csproj" />
     <ProjectReference Include="..\..\textures\source\Textures.csproj" />
   </ItemGroup>
 
