@@ -2,6 +2,7 @@
 using Meshes;
 using Meshes.Components;
 using Rendering.Components;
+using System;
 using Unmanaged;
 using Worlds;
 
@@ -80,7 +81,7 @@ namespace Rendering
             mesh = entity.As<Mesh>();
             rint fontReference = entity.AddReference(font);
             entity.AddComponent(new IsTextMeshRequest(fontReference));
-            entity.CreateArray(text.AsUSpan().As<TextCharacter>());
+            entity.CreateArray(new USpan<char>(text).As<TextCharacter>());
         }
 
         public readonly void Dispose()
@@ -104,7 +105,7 @@ namespace Rendering
 
         public readonly void SetText(string text)
         {
-            SetText(text.AsUSpan());
+            SetText(text.AsSpan());
         }
 
         public readonly void SetText(FixedString text)
