@@ -21,10 +21,10 @@ namespace Rendering
         {
             get
             {
-                IsTextMeshRequest request = mesh.AsEntity().GetComponent<IsTextMeshRequest>();
-                rint fontReference = request.fontReference;
+                ref IsTextMeshRequest component = ref mesh.AsEntity().GetComponent<IsTextMeshRequest>();
+                rint fontReference = component.fontReference;
                 uint fontEntity = mesh.GetReference(fontReference);
-                return new Font(mesh.AsEntity().world, fontEntity);
+                return new Entity(mesh.AsEntity().world, fontEntity).As<Font>();
             }
             set
             {

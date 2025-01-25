@@ -70,11 +70,6 @@ namespace Rendering
             archetype.AddComponentType<IsTextRenderer>();
         }
 
-        public TextRenderer(World world, uint existingEntity)
-        {
-            entity = new(world, existingEntity);
-        }
-
         public TextRenderer(World world, TextMesh textMesh, Material material, LayerMask renderMask)
         {
             entity = new Entity<IsTextRenderer>(world, new IsTextRenderer((rint)1, (rint)2, (rint)3, renderMask));
