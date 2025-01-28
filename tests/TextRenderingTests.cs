@@ -8,13 +8,13 @@ namespace TextRendering.Tests
     {
         static TextRenderingTests()
         {
-            TypeRegistry.Load<TextRendering.TypeBank>();
+            TypeRegistry.Load<TextRenderingTypeBank>();
         }
 
         protected override Worlds.Schema CreateSchema()
         {
             Schema schema = base.CreateSchema();
-            schema.Load<TextRendering.SchemaBank>();
+            schema.Load<TextRenderingSchemaBank>();
             return schema;
         }
     }
