@@ -1,30 +1,29 @@
-﻿using Rendering.Components;
+﻿using Materials;
+using Rendering.Components;
 using Worlds;
 
 namespace Rendering
 {
-    public readonly struct TextRenderer : IEntity
+    public readonly partial struct TextRenderer : IEntity
     {
-        private readonly Entity entity;
-
         public readonly Material Material
         {
             get
             {
-                IsTextRenderer component = entity.GetComponent<IsTextRenderer>();
-                uint materialEntity = entity.GetReference(component.materialReference);
-                return new(entity.world, materialEntity);
+                IsTextRenderer component = GetComponent<IsTextRenderer>();
+                uint materialEntity = GetReference(component.materialReference);
+                return new Entity(world, materialEntity).As<Material>();
             }
             set
             {
-                ref IsTextRenderer component = ref entity.GetComponent<IsTextRenderer>();
-                if (entity.ContainsReference(component.materialReference))
+                ref IsTextRenderer component = ref GetComponent<IsTextRenderer>();
+                if (ContainsReference(component.materialReference))
                 {
-                    entity.SetReference(component.materialReference, value);
+                    SetReference(component.materialReference, value);
                 }
                 else
                 {
-                    component.materialReference = entity.AddReference(value);
+                    component.materialReference = AddReference(value);
                 }
             }
         }
@@ -33,49 +32,43 @@ namespace Rendering
         {
             get
             {
-                IsTextRenderer component = entity.GetComponent<IsTextRenderer>();
-                uint meshEntity = entity.GetReference(component.textMeshReference);
-                return new Entity(entity.world, meshEntity).As<TextMesh>();
+                IsTextRenderer component = GetComponent<IsTextRenderer>();
+                uint meshEntity = GetReference(component.textMeshReference);
+                return new Entity(world, meshEntity).As<TextMesh>();
             }
             set
             {
-                ref IsTextRenderer component = ref entity.GetComponent<IsTextRenderer>();
-                if (entity.ContainsReference(component.textMeshReference))
+                ref IsTextRenderer component = ref GetComponent<IsTextRenderer>();
+                if (ContainsReference(component.textMeshReference))
                 {
-                    entity.SetReference(component.textMeshReference, value);
+                    SetReference(component.textMeshReference, value);
                 }
                 else
                 {
-                    component.textMeshReference = entity.AddReference(value);
+                    component.textMeshReference = AddReference(value);
                 }
 
-                if (entity.ContainsReference(component.fontReference))
+                if (ContainsReference(component.fontReference))
                 {
-                    entity.SetReference(component.fontReference, value.Font);
+                    SetReference(component.fontReference, value.Font);
                 }
                 else
                 {
-                    component.fontReference = entity.AddReference(value.Font);
+                    component.fontReference = AddReference(value.Font);
                 }
             }
         }
 
-        public readonly ref LayerMask RenderMask => ref entity.GetComponent<IsTextRenderer>().renderMask;
+        public readonly ref LayerMask RenderMask => ref GetComponent<IsTextRenderer>().renderMask;
 
-        readonly uint IEntity.Value => entity.value;
-        readonly World IEntity.World => entity.world;
-
-        readonly void IEntity.Describe(ref Archetype archetype)
-        {
-            archetype.AddComponentType<IsTextRenderer>();
-        }
 
         public TextRenderer(World world, TextMesh textMesh, Material material, LayerMask renderMask)
         {
-            entity = new Entity<IsTextRenderer>(world, new IsTextRenderer((rint)1, (rint)2, (rint)3, renderMask));
-            entity.AddReference(textMesh);
-            entity.AddReference(material);
-            entity.AddReference(textMesh.Font);
+            this.world = world;
+            value = world.CreateEntity(new IsTextRenderer((rint)1, (rint)2, (rint)3, renderMask));
+            AddReference(textMesh);
+            AddReference(material);
+            AddReference(textMesh.Font);
         }
 
         public TextRenderer(World world, TextMesh textMesh, Material material) :
@@ -83,14 +76,9 @@ namespace Rendering
         {
         }
 
-        public readonly void Dispose()
+        readonly void IEntity.Describe(ref Archetype archetype)
         {
-            entity.Dispose();
-        }
-
-        public static implicit operator Entity(TextRenderer renderer)
-        {
-            return renderer.entity;
+            archetype.AddComponentType<IsTextRenderer>();
         }
     }
 }

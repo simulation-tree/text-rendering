@@ -5,12 +5,12 @@ namespace Rendering.Components
     [Component]
     public struct IsTextMeshRequest
     {
-        public uint version;
+        public bool loaded;
         public rint fontReference;
 
         public IsTextMeshRequest(rint fontReference)
         {
-            version = default;
+            this.loaded = false;
             this.fontReference = fontReference;
         }
     }
