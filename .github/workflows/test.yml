@@ -56,13 +56,6 @@ jobs:
           token: ${{ secrets.PAT }}
           path: worlds
 
-      - name: Checkout `data`
-        uses: actions/checkout@v4.1.2
-        with:
-          repository: game-simulations/data
-          token: ${{ secrets.PAT }}
-          path: data
-
       - name: Checkout `rendering`
         uses: actions/checkout@v4.1.2
         with:
@@ -70,19 +63,12 @@ jobs:
           token: ${{ secrets.PAT }}
           path: rendering
 
-      - name: Checkout `simulation`
+      - name: Checkout `materials`
         uses: actions/checkout@v4.1.2
         with:
-          repository: game-simulations/simulation
+          repository: game-simulations/materials
           token: ${{ secrets.PAT }}
-          path: simulation
-
-      - name: Checkout `serialization`
-        uses: actions/checkout@v4.1.2
-        with:
-          repository: game-simulations/serialization
-          token: ${{ secrets.PAT }}
-          path: serialization
+          path: materials
 
       - name: Checkout `shaders`
         uses: actions/checkout@v4.1.2
