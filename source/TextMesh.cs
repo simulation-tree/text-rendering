@@ -3,6 +3,7 @@ using Meshes;
 using Meshes.Components;
 using Rendering.Components;
 using System;
+using System.Runtime.CompilerServices;
 using Unmanaged;
 using Worlds;
 
@@ -60,14 +61,14 @@ namespace Rendering
             CreateArray(text.As<TextCharacter>());
         }
 
+        [SkipLocalsInit]
         public TextMesh(World world, FixedString text, Font font)
         {
             this.world = world;
             value = world.CreateEntity(new IsTextMeshRequest((rint)1));
             AddReference(font);
-            USpan<char> buffer = stackalloc char[(int)FixedString.Capacity];
-            uint length = text.CopyTo(buffer);
-            CreateArray(buffer.Slice(0, length).As<TextCharacter>());
+            USpan<char> buffer = stackalloc char[text.Length];
+            CreateArray(buffer.As<TextCharacter>());
         }
 
         public TextMesh(World world, string text, Font font)
@@ -103,9 +104,10 @@ namespace Rendering
             SetText(text.AsSpan());
         }
 
+        [SkipLocalsInit]
         public readonly void SetText(FixedString text)
         {
-            USpan<char> buffer = stackalloc char[(int)text.Length];
+            USpan<char> buffer = stackalloc char[text.Length];
             uint length = text.CopyTo(buffer);
             SetText(buffer.Slice(0, length));
         }
