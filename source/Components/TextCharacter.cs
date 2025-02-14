@@ -1,8 +1,5 @@
-﻿using Worlds;
-
-namespace Rendering.Components
+﻿namespace Rendering.Components
 {
-    [ArrayElement]
     public struct TextCharacter
     {
         public char value;

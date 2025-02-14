@@ -2,7 +2,6 @@
 
 namespace Rendering.Components
 {
-    [Component]
     public struct IsTextMeshRequest
     {
         public bool loaded;

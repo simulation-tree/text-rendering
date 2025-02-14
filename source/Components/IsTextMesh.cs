@@ -1,8 +1,5 @@
-﻿using Worlds;
-
-namespace Rendering.Components
+﻿namespace Rendering.Components
 {
-    [Component]
     public readonly struct IsTextMesh
     {
         public readonly uint version;
