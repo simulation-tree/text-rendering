@@ -83,6 +83,7 @@ namespace Rendering
         {
             archetype.AddComponentType<IsTextMesh>();
             archetype.AddComponentType<IsMesh>();
+            archetype.AddArrayType<TextCharacter>();
         }
 
         /// <summary>
