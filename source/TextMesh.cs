@@ -14,7 +14,7 @@ namespace Rendering
         /// <summary>
         /// Read only access to the text content.
         /// </summary>
-        public readonly USpan<char> Text => GetArray<TextCharacter>().As<char>();
+        public readonly USpan<char> Content => GetArray<TextCharacter>().As<char>();
 
         public readonly Font Font
         {
@@ -68,6 +68,7 @@ namespace Rendering
             value = world.CreateEntity(new IsTextMeshRequest((rint)1));
             AddReference(font);
             USpan<char> buffer = stackalloc char[text.Length];
+            text.CopyTo(buffer);
             CreateArray(buffer.As<TextCharacter>());
         }
 
