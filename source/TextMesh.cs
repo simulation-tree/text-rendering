@@ -1,4 +1,5 @@
-﻿using Fonts;
+﻿using Collections.Generic;
+using Fonts;
 using Meshes;
 using Meshes.Components;
 using Rendering.Components;
@@ -14,7 +15,7 @@ namespace Rendering
         /// <summary>
         /// Read only access to the text content.
         /// </summary>
-        public readonly USpan<char> Content => GetArray<TextCharacter>().As<char>();
+        public readonly USpan<char> Content => GetArray<TextCharacter>().AsSpan<char>();
 
         public readonly Font Font
         {
@@ -92,8 +93,9 @@ namespace Rendering
         /// </summary>
         public readonly void SetText(USpan<char> text)
         {
-            USpan<TextCharacter> array = ResizeArray<TextCharacter>(text.Length);
-            text.As<TextCharacter>().CopyTo(array);
+            Array<TextCharacter> array = GetArray<TextCharacter>();
+            array.Length = text.Length;
+            text.As<TextCharacter>().CopyTo(array.AsSpan());
             ref IsTextMeshRequest request = ref TryGetComponent<IsTextMeshRequest>(out bool contains);
             if (contains)
             {
