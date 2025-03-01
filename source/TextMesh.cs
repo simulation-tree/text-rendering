@@ -1,5 +1,4 @@
-﻿using Collections.Generic;
-using Fonts;
+﻿using Fonts;
 using Meshes;
 using Meshes.Components;
 using Rendering.Components;
@@ -93,7 +92,7 @@ namespace Rendering
         /// </summary>
         public readonly void SetText(USpan<char> text)
         {
-            Array<TextCharacter> array = GetArray<TextCharacter>();
+            Values<TextCharacter> array = GetArray<TextCharacter>();
             array.Length = text.Length;
             text.As<TextCharacter>().CopyTo(array.AsSpan());
             ref IsTextMeshRequest request = ref TryGetComponent<IsTextMeshRequest>(out bool contains);
@@ -112,8 +111,8 @@ namespace Rendering
         public readonly void SetText(FixedString text)
         {
             USpan<char> buffer = stackalloc char[text.Length];
-            uint length = text.CopyTo(buffer);
-            SetText(buffer.Slice(0, length));
+            text.CopyTo(buffer);
+            SetText(buffer);
         }
 
         public static implicit operator Mesh(TextMesh textMesh)
