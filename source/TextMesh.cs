@@ -62,7 +62,7 @@ namespace Rendering
         }
 
         [SkipLocalsInit]
-        public TextMesh(World world, FixedString text, Font font)
+        public TextMesh(World world, ASCIIText256 text, Font font)
         {
             this.world = world;
             value = world.CreateEntity(new IsTextMeshRequest((rint)1));
@@ -108,7 +108,7 @@ namespace Rendering
         }
 
         [SkipLocalsInit]
-        public readonly void SetText(FixedString text)
+        public readonly void SetText(ASCIIText256 text)
         {
             USpan<char> buffer = stackalloc char[text.Length];
             text.CopyTo(buffer);

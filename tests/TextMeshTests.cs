@@ -22,7 +22,7 @@ namespace TextRendering.Tests
             using World world = CreateWorld();
             Font font = new(world, "Assets/SomeFont.ttf");
 
-            FixedString content = "Hammer time";
+            ASCIIText256 content = "Hammer time";
             TextMesh textMesh = new(world, content, font);
 
             Assert.That(textMesh.Content.ToString(), Is.EqualTo(content.ToString()));
