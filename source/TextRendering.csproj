@@ -11,8 +11,8 @@
         <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
         <Title>Text Rendering</Title>
         <Authors>popcron</Authors>
-        <Company>game-simulations</Company>
-        <RepositoryUrl>https://github.com/game-simulations/text-rendering</RepositoryUrl>
+        <Company>simulation-tree</Company>
+        <RepositoryUrl>https://github.com/simulation-tree/text-rendering</RepositoryUrl>
         <PackageId/>
     </PropertyGroup>
 

@@ -1,5 +1,5 @@
 # Text Rendering
-Definition of generated [meshes](https://github.com/game-simulations/meshes) with UV coordinates pointing to glyphs from [fonts](https://github.com/game-simulations/fonts).
+Definition of generated [meshes](https://github.com/simulation-tree/meshes) with UV coordinates pointing to glyphs from [fonts](https://github.com/simulation-tree/fonts).
 
 ### Usage
 Text rendering happens in 3D space like rendering other meshes. Each of them require a text mesh, material
