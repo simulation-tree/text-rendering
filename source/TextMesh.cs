@@ -14,7 +14,7 @@ namespace Rendering
         /// <summary>
         /// Read only access to the text content.
         /// </summary>
-        public readonly USpan<char> Content => GetArray<TextCharacter>().AsSpan<char>();
+        public readonly System.Span<char> Content => GetArray<TextCharacter>().AsSpan<char>();
 
         public readonly Font Font
         {
@@ -53,12 +53,12 @@ namespace Rendering
             }
         }
 
-        public TextMesh(World world, USpan<char> text, Font font)
+        public TextMesh(World world, ReadOnlySpan<char> text, Font font)
         {
             this.world = world;
             value = world.CreateEntity(new IsTextMeshRequest((rint)1));
             AddReference(font);
-            CreateArray(text.As<TextCharacter>());
+            CreateArray(text.As<char, TextCharacter>());
         }
 
         [SkipLocalsInit]
@@ -67,9 +67,9 @@ namespace Rendering
             this.world = world;
             value = world.CreateEntity(new IsTextMeshRequest((rint)1));
             AddReference(font);
-            USpan<char> buffer = stackalloc char[text.Length];
+            Span<char> buffer = stackalloc char[text.Length];
             text.CopyTo(buffer);
-            CreateArray(buffer.As<TextCharacter>());
+            CreateArray(buffer.As<char, TextCharacter>());
         }
 
         public TextMesh(World world, string text, Font font)
@@ -77,7 +77,7 @@ namespace Rendering
             this.world = world;
             value = world.CreateEntity(new IsTextMeshRequest((rint)1));
             AddReference(font);
-            CreateArray(new USpan<char>(text).As<TextCharacter>());
+            CreateArray(text.AsSpan().As<char, TextCharacter>());
         }
 
         readonly void IEntity.Describe(ref Archetype archetype)
@@ -90,11 +90,11 @@ namespace Rendering
         /// <summary>
         /// Assigns the text content to the entity.
         /// </summary>
-        public readonly void SetText(USpan<char> text)
+        public readonly void SetText(ReadOnlySpan<char> text)
         {
             Values<TextCharacter> array = GetArray<TextCharacter>();
             array.Length = text.Length;
-            text.As<TextCharacter>().CopyTo(array.AsSpan());
+            text.As<char, TextCharacter>().CopyTo(array.AsSpan());
             ref IsTextMeshRequest request = ref TryGetComponent<IsTextMeshRequest>(out bool contains);
             if (contains)
             {
@@ -110,7 +110,7 @@ namespace Rendering
         [SkipLocalsInit]
         public readonly void SetText(ASCIIText256 text)
         {
-            USpan<char> buffer = stackalloc char[text.Length];
+            System.Span<char> buffer = stackalloc char[text.Length];
             text.CopyTo(buffer);
             SetText(buffer);
         }
