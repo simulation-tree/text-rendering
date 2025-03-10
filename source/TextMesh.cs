@@ -14,7 +14,7 @@ namespace Rendering
         /// <summary>
         /// Read only access to the text content.
         /// </summary>
-        public readonly System.Span<char> Content => GetArray<TextCharacter>().AsSpan<char>();
+        public readonly ReadOnlySpan<char> Content => GetArray<TextCharacter>().AsSpan<char>();
 
         public readonly Font Font
         {
@@ -110,7 +110,7 @@ namespace Rendering
         [SkipLocalsInit]
         public readonly void SetText(ASCIIText256 text)
         {
-            System.Span<char> buffer = stackalloc char[text.Length];
+            Span<char> buffer = stackalloc char[text.Length];
             text.CopyTo(buffer);
             SetText(buffer);
         }
