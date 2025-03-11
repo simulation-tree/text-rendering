@@ -93,8 +93,8 @@ namespace Rendering
         public readonly void SetText(ReadOnlySpan<char> text)
         {
             Values<TextCharacter> array = GetArray<TextCharacter>();
-            array.Length = text.Length;
-            text.As<char, TextCharacter>().CopyTo(array.AsSpan());
+            array.CopyFrom(text.As<char, TextCharacter>());
+
             ref IsTextMeshRequest request = ref TryGetComponent<IsTextMeshRequest>(out bool contains);
             if (contains)
             {
