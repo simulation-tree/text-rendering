@@ -10,9 +10,9 @@ namespace TextRendering.Tests
     {
         static TextRenderingTests()
         {
-            TypeRegistry.Load<TextRenderingTypeBank>();
-            TypeRegistry.Load<MeshesTypeBank>();
-            TypeRegistry.Load<FontsTypeBank>();
+            MetadataRegistry.Load<TextRenderingTypeBank>();
+            MetadataRegistry.Load<MeshesTypeBank>();
+            MetadataRegistry.Load<FontsTypeBank>();
         }
 
         protected override Schema CreateSchema()
