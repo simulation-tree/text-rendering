@@ -1,4 +1,5 @@
-﻿using Materials;
+﻿using Fonts;
+using Materials;
 using Rendering.Components;
 using Worlds;
 
@@ -55,6 +56,28 @@ namespace Rendering
                 else
                 {
                     component.fontReference = AddReference(value.Font);
+                }
+            }
+        }
+
+        public readonly Font Font
+        {
+            get
+            {
+                IsTextRenderer component = GetComponent<IsTextRenderer>();
+                uint fontEntity = GetReference(component.fontReference);
+                return new Entity(world, fontEntity).As<Font>();
+            }
+            set
+            {
+                ref IsTextRenderer component = ref GetComponent<IsTextRenderer>();
+                if (ContainsReference(component.fontReference))
+                {
+                    SetReference(component.fontReference, value);
+                }
+                else
+                {
+                    component.fontReference = AddReference(value);
                 }
             }
         }
