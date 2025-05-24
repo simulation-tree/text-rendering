@@ -2,9 +2,9 @@
 
 namespace Rendering.Components
 {
-    public readonly struct IsTextMesh
+    public struct IsTextMesh
     {
-        public readonly uint version;
+        public uint version;
 
 #if NET
         [Obsolete("Default constructor not supported", true)]
@@ -17,11 +17,6 @@ namespace Rendering.Components
         public IsTextMesh(uint version)
         {
             this.version = version;
-        }
-
-        public readonly IsTextMesh IncrementVersion()
-        {
-            return new(version + 1);
         }
     }
 }
